@@ -27,6 +27,10 @@ namespace MVC5HWWeek1.Models
             }
             return data;
         }
+        public override void Delete(客戶聯絡人 客戶聯絡人)
+        {
+            客戶聯絡人.是否被刪除 = true;
+        }
     }
 
 	public  interface I客戶聯絡人Repository : IRepository<客戶聯絡人>

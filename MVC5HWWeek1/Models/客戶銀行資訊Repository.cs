@@ -14,6 +14,10 @@ namespace MVC5HWWeek1.Models
         {
             return base.All().Where(c => !c.是否被刪除);
         }
+        public override void Delete(客戶銀行資訊 客戶銀行資訊)
+        {
+            客戶銀行資訊.是否被刪除 = true;
+        }
     }
 
 	public  interface I客戶銀行資訊Repository : IRepository<客戶銀行資訊>

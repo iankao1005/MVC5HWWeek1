@@ -22,7 +22,7 @@ namespace MVC5HWWeek1.Controllers
             repoCustomer = RepositoryHelper.Get客戶資料Repository();
         }
         // GET: 客戶聯絡人
-        public ActionResult Index(string name, string work)
+        public ActionResult Index(string name, string work, string order)
         {
             //////var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料).Where(x => !x.是否被刪除);
             ////var data = db.客戶聯絡人.Where(c => !c.是否被刪除).AsQueryable();
@@ -33,6 +33,7 @@ namespace MVC5HWWeek1.Controllers
             //}
             ////return View(客戶聯絡人.ToList());
             var data = repo.Search(name, work);
+
             return View(data.ToList());
         }
 

@@ -35,7 +35,7 @@ namespace MVC5HWWeek1.Controllers
         }
         public ActionResult 客戶相關檢視表()
         {
-            return View(repoView);
+            return View(repoView.All().ToList());
         }
         // GET: 客戶資料/Details/5
         public ActionResult Details(int? id)
