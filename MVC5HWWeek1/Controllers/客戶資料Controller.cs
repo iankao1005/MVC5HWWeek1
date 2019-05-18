@@ -10,14 +10,23 @@ using MVC5HWWeek1.Models;
 
 namespace MVC5HWWeek1.Controllers
 {
+
     public class 客戶資料Controller : Controller
     {
-        private 客戶資料Entities db = new 客戶資料Entities();
+        //private 客戶資料Entities db = new 客戶資料Entities();
+        客戶資料Repository repo;
+        view客戶相關資訊Repository repoView;
 
+        public 客戶資料Controller()
+        {
+            repo = RepositoryHelper.Get客戶資料Repository();
+            repoView = RepositoryHelper.Getview客戶相關資訊Repository();
+        }
         // GET: 客戶資料
         public ActionResult Index(string name)
         {
-            var data = db.客戶資料.Where(c => !c.是否被刪除).AsQueryable();
+            //var data = db.客戶資料.Where(c => !c.是否被刪除).AsQueryable();
+            var data = repo.All();
             if (!string.IsNullOrEmpty(name))
             {
                 data = data.Where(c => c.客戶名稱.Contains(name));
@@ -27,7 +36,7 @@ namespace MVC5HWWeek1.Controllers
         }
         public ActionResult 客戶相關檢視表()
         {
-            return View(db.view客戶相關資訊.ToList());
+            return View(repoView);
         }
         // GET: 客戶資料/Details/5
         public ActionResult Details(int? id)
@@ -36,7 +45,8 @@ namespace MVC5HWWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -59,8 +69,10 @@ namespace MVC5HWWeek1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶資料.Add(客戶資料);
-                db.SaveChanges();
+                //db.客戶資料.Add(客戶資料);
+                //db.SaveChanges();
+                repo.Add(客戶資料);
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -74,7 +86,8 @@ namespace MVC5HWWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -91,8 +104,10 @@ namespace MVC5HWWeek1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶資料).State = EntityState.Modified;
-                db.SaveChanges();
+                //db.Entry(客戶資料).State = EntityState.Modified;
+                //db.SaveChanges();
+                repo.UnitOfWork.Context.Entry(客戶資料).State = EntityState.Modified;
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
             return View(客戶資料);
@@ -105,7 +120,8 @@ namespace MVC5HWWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo.Find(id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -118,10 +134,13 @@ namespace MVC5HWWeek1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
-            //db.客戶資料.Remove(客戶資料);
-            客戶資料.是否被刪除 = true;
-            db.SaveChanges();
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            ////db.客戶資料.Remove(客戶資料);
+            //客戶資料.是否被刪除 = true;
+            //db.SaveChanges();
+            客戶資料 客戶資料 = repo.Find(id);
+            repo.Delete(客戶資料);
+            repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -129,7 +148,8 @@ namespace MVC5HWWeek1.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
+                repo.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }
