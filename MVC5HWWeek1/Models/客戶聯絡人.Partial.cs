@@ -3,12 +3,36 @@ namespace MVC5HWWeek1.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+    using System.Linq;
+
     [MetadataType(typeof(客戶聯絡人MetaData))]
-    public partial class 客戶聯絡人
+    public partial class 客戶聯絡人 : IValidatableObject
     {
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var db = new 客戶資料Entities();
+
+            if (this.Id == 0)
+            {
+                //新增
+                if (db.客戶聯絡人.Where(c => c.Email == this.Email && c.客戶Id == this.客戶Id).Any())
+                {
+                    yield return new ValidationResult("Email 重複", new string[] { "Email"});
+                }
+            }
+            else
+            {
+                //修改
+                if (db.客戶聯絡人.Where(c => c.Email == this.Email && c.Id != this.Id).Any())
+                {
+                    yield return new ValidationResult("Email 重複");
+                }
+            }
+
+            yield return ValidationResult.Success;
+        }
     }
-    
+
     public partial class 客戶聯絡人MetaData
     {
         [Required]
