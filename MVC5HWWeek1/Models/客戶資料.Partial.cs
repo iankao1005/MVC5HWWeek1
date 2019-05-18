@@ -35,8 +35,7 @@ namespace MVC5HWWeek1.Models
         [StringLength(250, ErrorMessage="欄位長度不得大於 250 個字元")]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
-        public bool 是否被刪除 { get; set; }
+        public Nullable<bool> 是否被刪除 { get; set; }
     
         public virtual ICollection<客戶銀行資訊> 客戶銀行資訊 { get; set; }
         public virtual ICollection<客戶聯絡人> 客戶聯絡人 { get; set; }

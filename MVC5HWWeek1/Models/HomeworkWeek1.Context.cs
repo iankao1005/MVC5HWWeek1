@@ -28,5 +28,6 @@ namespace MVC5HWWeek1.Models
         public virtual DbSet<客戶資料> 客戶資料 { get; set; }
         public virtual DbSet<客戶銀行資訊> 客戶銀行資訊 { get; set; }
         public virtual DbSet<客戶聯絡人> 客戶聯絡人 { get; set; }
+        public virtual DbSet<view客戶相關資訊> view客戶相關資訊 { get; set; }
     }
 }

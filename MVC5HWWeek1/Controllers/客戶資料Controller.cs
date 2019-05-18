@@ -19,7 +19,10 @@ namespace MVC5HWWeek1.Controllers
         {
             return View(db.客戶資料.ToList());
         }
-
+        public ActionResult 客戶相關檢視表()
+        {
+            return View();
+        }
         // GET: 客戶資料/Details/5
         public ActionResult Details(int? id)
         {

@@ -152,6 +152,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HomeworkWeek1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\view客戶相關資訊.cs">
+      <DependentUpon>HomeworkWeek1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\客戶聯絡人.cs">
       <DependentUpon>HomeworkWeek1.tt</DependentUpon>
     </Compile>
