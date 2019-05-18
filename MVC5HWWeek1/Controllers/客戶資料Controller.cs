@@ -8,6 +8,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVC5HWWeek1.Models;
+using ClosedXML.Excel;
+using System.IO;
+using System.Reflection;
 
 namespace MVC5HWWeek1.Controllers
 {
@@ -143,7 +146,69 @@ namespace MVC5HWWeek1.Controllers
             repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
+        public FileResult Export()
+        {
+            //ClosedXML的用法 先new一個Excel Workbook
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                var data = repo.All().Select(c => new { c.客戶名稱, c.統一編號, c.電話, c.傳真, c.地址, c.Email, c.客戶分類 });
+                var ws = wb.Worksheets.Add("客戶資料", 1);
+                //ws.Cell(1, 1).InsertData(ConvertObjectsToDataTable(data));
+                ws.Cell(1, 1).InsertData(data);
 
+                //因為是用Query的方式,這個地方要用串流的方式來存檔
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(memoryStream);
+                    //請注意 一定要加入這行,不然Excel會是空檔
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    //return this.File(memoryStream.ToArray(), "application/vnd.ms-excel", "Download.xlsx");
+                    return this.File(memoryStream.ToArray(), "application/vnd.ms-excel", DateTime.Now.ToString() + ".xlsx");
+                }
+            }
+        }
+        public static DataTable ConvertObjectsToDataTable(IEnumerable<object> objects)
+        {
+            DataTable dt = null;
+
+            if (objects != null && objects.Count() > 0)
+            {
+                Type type = objects.First().GetType();
+                dt = new DataTable(type.Name);
+
+                foreach (PropertyInfo property in type.GetProperties())
+                {
+                    dt.Columns.Add(new DataColumn(property.Name));
+                }
+
+                foreach (FieldInfo field in type.GetFields())
+                {
+                    dt.Columns.Add(new DataColumn(field.Name));
+                }
+
+                foreach (object obj in objects)
+                {
+                    DataRow dr = dt.NewRow();
+                    foreach (DataColumn column in dt.Columns)
+                    {
+                        PropertyInfo propertyInfo = type.GetProperty(column.ColumnName);
+                        if (propertyInfo != null)
+                        {
+                            dr[column.ColumnName] = propertyInfo.GetValue(obj, null);
+                        }
+
+                        FieldInfo fieldInfo = type.GetField(column.ColumnName);
+                        if (fieldInfo != null)
+                        {
+                            dr[column.ColumnName] = fieldInfo.GetValue(obj);
+                        }
+                    }
+                    dt.Rows.Add(dr);
+                }
+            }
+
+            return dt;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
