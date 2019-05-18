@@ -17,7 +17,7 @@ namespace MVC5HWWeek1.Controllers
         // GET: 客戶資料
         public ActionResult Index()
         {
-            return View(db.客戶資料.ToList());
+            return View(db.客戶資料.Where(c => !c.是否被刪除).ToList());
         }
         public ActionResult 客戶相關檢視表()
         {
@@ -113,7 +113,8 @@ namespace MVC5HWWeek1.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             客戶資料 客戶資料 = db.客戶資料.Find(id);
-            db.客戶資料.Remove(客戶資料);
+            //db.客戶資料.Remove(客戶資料);
+            客戶資料.是否被刪除 = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
