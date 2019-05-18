@@ -22,16 +22,17 @@ namespace MVC5HWWeek1.Controllers
             repoCustomer = RepositoryHelper.Get客戶資料Repository();
         }
         // GET: 客戶聯絡人
-        public ActionResult Index(string name)
+        public ActionResult Index(string name, string work)
         {
-            ////var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料).Where(x => !x.是否被刪除);
-            //var data = db.客戶聯絡人.Where(c => !c.是否被刪除).AsQueryable();
-            var data = repo.All();
-            if (!string.IsNullOrEmpty(name))
-            {
-                data = data.Where(c => c.姓名.Contains(name));
-            }
-            //return View(客戶聯絡人.ToList());
+            //////var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料).Where(x => !x.是否被刪除);
+            ////var data = db.客戶聯絡人.Where(c => !c.是否被刪除).AsQueryable();
+            //var data = repo.All();
+            //if (!string.IsNullOrEmpty(name))
+            //{
+            //    data = data.Where(c => c.姓名.Contains(name));
+            //}
+            ////return View(客戶聯絡人.ToList());
+            var data = repo.Search(name, work);
             return View(data.ToList());
         }
 

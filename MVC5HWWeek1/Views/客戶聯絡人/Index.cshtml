@@ -13,6 +13,10 @@
     {
         <input type="search" placeholder="姓名" name="name" value="" />
     }
+    @using (Html.BeginForm("Index", "客戶聯絡人", FormMethod.Get))
+    {
+        <input type="search" placeholder="職稱" name="work" value="" />
+    }
 </p>
 <table class="table">
     <tr>
