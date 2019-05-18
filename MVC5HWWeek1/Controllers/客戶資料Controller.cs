@@ -23,15 +23,20 @@ namespace MVC5HWWeek1.Controllers
         {
             repo = RepositoryHelper.Get客戶資料Repository();
             repoView = RepositoryHelper.Getview客戶相關資訊Repository();
+            ViewBag.客戶分類 = new SelectList(客戶分類);
         }
         // GET: 客戶資料
-        public ActionResult Index(string name)
+        public ActionResult Index(string name, string type)
         {
             //var data = db.客戶資料.Where(c => !c.是否被刪除).AsQueryable();
             var data = repo.All();
             if (!string.IsNullOrEmpty(name))
             {
                 data = data.Where(c => c.客戶名稱.Contains(name));
+            }
+            if (!string.IsNullOrEmpty(type))
+            {
+                data = data.Where(c => c.客戶分類 == type);
             }
             //return View(db.客戶資料.Where(c => !c.是否被刪除).ToList());
             return View(data.ToList());
@@ -59,7 +64,6 @@ namespace MVC5HWWeek1.Controllers
         // GET: 客戶資料/Create
         public ActionResult Create()
         {
-            ViewBag.客戶分類 = new SelectList(客戶分類);
             return View();
         }
 
@@ -85,7 +89,6 @@ namespace MVC5HWWeek1.Controllers
         // GET: 客戶資料/Edit/5
         public ActionResult Edit(int? id)
         {
-            ViewBag.客戶分類 = new SelectList(客戶分類);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -120,7 +123,6 @@ namespace MVC5HWWeek1.Controllers
         // GET: 客戶資料/Delete/5
         public ActionResult Delete(int? id)
         {
-            ViewBag.客戶分類 = new SelectList(客戶分類);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -129,6 +131,7 @@ namespace MVC5HWWeek1.Controllers
             客戶資料 客戶資料 = repo.Find(id.Value);
             if (客戶資料 == null)
             {
+            ViewBag.客戶分類 = new SelectList(客戶分類);
                 return HttpNotFound();
             }
             return View(客戶資料);

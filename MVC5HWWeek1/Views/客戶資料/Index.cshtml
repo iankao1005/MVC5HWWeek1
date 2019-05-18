@@ -12,6 +12,7 @@
     @using (Html.BeginForm("Index", "客戶資料", FormMethod.Get))
     {
         <input type="search" placeholder="客戶名稱" name="name" value="" />
+        @Html.DropDownList("type", (IEnumerable<SelectListItem>)ViewBag.客戶分類, htmlAttributes: new { @class = "" })
     }
 </p>
 <table class="table">
