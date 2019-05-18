@@ -54,6 +54,7 @@ namespace MVC5HWWeek1.Models
         public string Email { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
+        [RegularExpression(@"\d{4}-\d{6}", ErrorMessage = "格式錯誤(e.g.0911-111111)")]
         public string 手機 { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
