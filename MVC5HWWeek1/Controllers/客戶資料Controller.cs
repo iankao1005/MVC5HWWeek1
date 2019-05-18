@@ -29,15 +29,7 @@ namespace MVC5HWWeek1.Controllers
         public ActionResult Index(string name, string type)
         {
             //var data = db.客戶資料.Where(c => !c.是否被刪除).AsQueryable();
-            var data = repo.All();
-            if (!string.IsNullOrEmpty(name))
-            {
-                data = data.Where(c => c.客戶名稱.Contains(name));
-            }
-            if (!string.IsNullOrEmpty(type))
-            {
-                data = data.Where(c => c.客戶分類 == type);
-            }
+            var data = repo.Search(name, type);
             //return View(db.客戶資料.Where(c => !c.是否被刪除).ToList());
             return View(data.ToList());
         }

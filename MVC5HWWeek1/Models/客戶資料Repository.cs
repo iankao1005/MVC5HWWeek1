@@ -14,6 +14,19 @@ namespace MVC5HWWeek1.Models
         {
             return base.All().Where(c => !c.是否被刪除);
         }
+        public IQueryable<客戶資料> Search(string name, string type)
+        {
+            var data = this.All();
+            if (!string.IsNullOrEmpty(name))
+            {
+                data = data.Where(c => c.客戶名稱.Contains(name));
+            }
+            if (!string.IsNullOrEmpty(type))
+            {
+                data = data.Where(c => c.客戶分類 == type);
+            }
+            return data;
+        }
     }
 
 	public  interface I客戶資料Repository : IRepository<客戶資料>
