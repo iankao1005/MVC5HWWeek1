@@ -22,10 +22,17 @@ namespace MVC5HWWeek1.Models
             }
             else
             {
-                //修改
-                if (db.客戶聯絡人.Where(c => c.Email == this.Email && c.Id != this.Id).Any())
+                if (this.是否被刪除 == false)
                 {
-                    yield return new ValidationResult("Email 重複");
+                    //修改
+                    if (db.客戶聯絡人.Where(c => c.Email == this.Email && c.Id != this.Id).Any())
+                    {
+                        yield return new ValidationResult("Email 重複");
+                    }
+                }
+                else
+                {
+                    //刪除不做判斷
                 }
             }
 

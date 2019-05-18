@@ -8,6 +8,11 @@
 
 <p>
     @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm("Index", "客戶資料", FormMethod.Get))
+    {
+        <input type="search" placeholder="客戶名稱" name="name" value="" />
+    }
 </p>
 <table class="table">
     <tr>

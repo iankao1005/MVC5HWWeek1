@@ -15,9 +15,15 @@ namespace MVC5HWWeek1.Controllers
         private 客戶資料Entities db = new 客戶資料Entities();
 
         // GET: 客戶資料
-        public ActionResult Index()
+        public ActionResult Index(string name)
         {
-            return View(db.客戶資料.Where(c => !c.是否被刪除).ToList());
+            var data = db.客戶資料.Where(c => !c.是否被刪除).AsQueryable();
+            if (!string.IsNullOrEmpty(name))
+            {
+                data = data.Where(c => c.客戶名稱.Contains(name));
+            }
+            //return View(db.客戶資料.Where(c => !c.是否被刪除).ToList());
+            return View(data.ToList());
         }
         public ActionResult 客戶相關檢視表()
         {
